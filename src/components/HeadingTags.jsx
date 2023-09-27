@@ -1,13 +1,34 @@
 "use client";
-import { useState } from "react";
+import { TyphographyContext } from "@/context/typography.context";
+import { useContext, useEffect, useState } from "react";
 
 const HeadingTags = () => {
-  const [selectTag, setselectTag] = useState("");
-  console.log(selectTag);
+  const { state, dispatch } = useContext(TyphographyContext);
+
+  const { selectedTag = {} } = state || {};
+
+  const [selectTag, setselectTag] = useState(selectedTag?.tag);
+
+  useEffect(() => {
+    setselectTag(selectedTag?.tag);
+  }, [selectedTag?.tag]);
+
+  useEffect(() => {
+    dispatch({
+      type: "SET_TAG",
+      payload: selectTag,
+    });
+  }, [selectTag]);
+
   return (
-    <div className="flex flex-col">
-      <span>Select Tag</span>
-      <select name="tag" onChange={(e) => setselectTag(e.target.value)}>
+    <div>
+      <span className="pr-3">Select Tag</span>
+      <select
+        className="rounded-md"
+        name="tag"
+        onChange={(e) => setselectTag(e.target.value)}
+        value={selectTag}
+      >
         <option value="h1">h1</option>
         <option value="h2">h2</option>
         <option value="h3">h3</option>

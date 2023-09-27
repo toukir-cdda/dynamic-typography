@@ -1,6 +1,6 @@
 "use client";
-import FontSize from "@/components/FontSize";
-import FontWeigth from "@/components/FontWeight";
+import TyphographyContainer from "@/components/TyphographyContainer";
+import { TyphographyProvider } from "@/context/typography.context";
 import dynamic from "next/dynamic";
 const HeadingTags = dynamic(() => import("../components/HeadingTags"), {
   ssr: false,
@@ -112,69 +112,9 @@ export default function Home() {
     },
   ];
 
-  const organizeComponents = (data) => {
-    const organizedData = [];
-
-    // Helper function to recursively find children for a given parentId
-    const findChildren = (parentId) => {
-      const children = [];
-      for (const item of data) {
-        if (item.parentId === parentId) {
-          const childItem = { ...item, children: findChildren(item.id) };
-          children.push(childItem);
-        }
-      }
-      return children.length > 0 ? children : null;
-    };
-
-    for (const item of data) {
-      if (!item.parentId) {
-        const newItem = { ...item, children: findChildren(item.id) };
-        organizedData.push(newItem);
-      }
-    }
-
-    return organizedData;
-  };
-
-  // Modify the data
-  const modifiedData = organizeComponents(typographyComponentData);
-
   return (
-    <>
-      <TypographyComponent data={modifiedData} />
-      <HeadingTags />
-      <FontSize />
-      <FontWeigth />
-    </>
+    <TyphographyProvider>
+      <TyphographyContainer componentData={typographyComponentData} />
+    </TyphographyProvider>
   );
 }
-
-const TypographyComponent = ({ data }) => {
-  const renderComponent = (component) => {
-    const {
-      id,
-      tag: Tag,
-      styles,
-      componentType,
-      content,
-      children,
-    } = component;
-    // const Tag = tag;
-    return (
-      <div key={id}>
-        {componentType === "parent" ? (
-          <Tag style={styles}>
-            {content && <Tag>{content}</Tag>}
-            {children && children.map((child) => renderComponent(child))}
-          </Tag>
-        ) : (
-          <Tag style={styles} onClick={() => console.log(component)}>
-            {content}
-          </Tag>
-        )}
-      </div>
-    );
-  };
-  return <div>{data.map((component) => renderComponent(component))}</div>;
-};

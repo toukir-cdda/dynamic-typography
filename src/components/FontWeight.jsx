@@ -1,14 +1,24 @@
 "use client";
-import { useState } from "react";
+import { TyphographyContext } from "@/context/typography.context";
+import { useContext, useEffect, useState } from "react";
 
 const FontWeigth = () => {
+  const { state, dispatch } = useContext(TyphographyContext);
   const [weigth, setWeigth] = useState("");
 
-  console.log(weigth);
+  useEffect(() => {
+    dispatch({
+      type: "SET_FONT_WEIGTH",
+      payload: weigth,
+    });
+  }, [weigth]);
   return (
     <div>
-      <span>Select Font weigth</span>
-      <select onChange={(e) => setWeigth(e.target.value)}>
+      <span className="pr-3">Select Font weigth</span>
+      <select
+        className="rounded-md "
+        onChange={(e) => setWeigth(e.target.value)}
+      >
         <option value="100">100 – Thin.</option>
         <option value="200">200 – Extra Light (Ultra Light)</option>
         <option value="300">300 – Light</option>
