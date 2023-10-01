@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'RobotoBold';
+    src: local('RobotoBold'),
+        url(/public/fonts/Roboto-Bold.ttf) format('truetype');
+}
