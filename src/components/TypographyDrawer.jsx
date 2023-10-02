@@ -1,221 +1,124 @@
-import React from 'react';
+'use client';
+import React, { useContext, useEffect, useState } from 'react';
+import FontSize from './FontSize';
+import LineHeight from './LineHeight';
+import LetterSpacing from './LetterSpacing';
+import WordSpacing from './WordSpacing';
+import FontWeigth from './FontWeight';
+import TextTransform from './TextTransform';
+import FontStyle from './FontStyle';
+import TextDecoration from './TextDecoration';
+import { TyphographyDrawerContext } from '@/context/typographyDrawer.context';
+import FontFamily from './FontFamily';
+import TextColor from './TextColor';
 
 const TypographyDrawer = () => {
+    const { state, dispatch } = useContext(TyphographyDrawerContext);
+    const { typographyProperties, typography, selectedEleId } = state || {};
+
+    const handleClick = (event, properties) => {
+        const clickedElementId = event.target.id;
+
+        dispatch({
+            type: 'SET_ELEMENT_PROPERTIES',
+            payload: {
+                elementId: clickedElementId,
+                properties: typographyProperties,
+            },
+        });
+
+        if (properties) {
+            dispatch({
+                type: 'SET_ELEMENT_PROPERTIES',
+                payload: {
+                    elementId: clickedElementId,
+                    properties: properties,
+                },
+            });
+        }
+
+        dispatch({
+            type: 'SELECT_ELEMENT',
+            payload: clickedElementId,
+        });
+    };
+
+    const getProperties = (typoData, eleId) => {
+        if (typoData !== undefined) {
+            const elemt = typoData.find((el) => el.elementId === eleId);
+            return elemt?.properties;
+        }
+    };
+
+    console.log(state);
+
     return (
-        <div className="bg-gray-200 rounded-md p-3">
-            <h3 className="font-semibold py-2">Typography</h3>
-            <form className="flex flex-col gap-2">
-                <div className="flex justify-between gap-4">
-                    <label htmlFor="" className="text-gray-500">
-                        Font Family
-                    </label>
-                    <select
-                        name=""
-                        id=""
-                        className="rounded-md px-2 outline-none text-gray-500 py-1 "
-                    >
-                        <option value="">Font name</option>
-                        <option value="">Roboto</option>
-                    </select>
-                </div>
+        <div className="flex justify-center items-center gap-4">
+            <div className="bg-gray-200 rounded-md p-3 ">
+                <h3 className="font-semibold py-2">Typography</h3>
+                <form className="flex flex-col gap-2">
+                    <FontFamily />
+                    <FontSize />
+                    <FontWeigth />
+                    <TextTransform />
+                    <FontStyle />
+                    <TextDecoration />
+                    <LineHeight />
+                    <LetterSpacing />
+                    <WordSpacing />
+                    {/* <TextColor /> */}
+                </form>
+            </div>
 
-                {/* with slider */}
-                <div className="flex flex-col">
-                    <label className="text-gray-500">Font Size</label>
-                    <div className="flex items-center gap-2  ">
-                        <div className="w-10/12">
-                            <input
-                                className="w-full"
-                                type="range"
-                                name=""
-                                id=""
-                            />
-                        </div>
-                        <div className="flex flex-col w-2/12">
-                            <select
-                                name=""
-                                id=""
-                                className="bg-transparent  w-11"
-                            >
-                                <option value="px">px</option>
-                                <option value="rem">rem</option>
-                            </select>
-                            <input
-                                type="number"
-                                name=""
-                                id=""
-                                className="w-9 h-9 rounded-md"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex justify-between gap-4">
-                    <label htmlFor="" className="text-gray-500">
-                        Weight
-                    </label>
-                    <select
-                        name=""
-                        id=""
-                        className="rounded-md px-2 outline-none text-gray-500 py-1"
-                    >
-                        <option value="100">100 – Thin.</option>
-                        <option value="200">
-                            200 – Extra Light (Ultra Light)
-                        </option>
-                        <option value="300">300 – Light</option>
-                        <option value="400">400 – Normal</option>
-                        <option value="500">500 – Medium</option>
-                        <option value="600">600 – Semi Bold (Demi Bold)</option>
-                        <option value="700">700 – Bold</option>
-                        <option value="800">
-                            800 – Extra Bold (Ultra Bold)
-                        </option>
-                        <option value="900">900 – Black (Heavy)</option>
-                    </select>
-                </div>
-
-                <div className="flex justify-between gap-4">
-                    <label htmlFor="" className="text-gray-500">
-                        Transform
-                    </label>
-                    <select
-                        name=""
-                        id=""
-                        className="rounded-md px-2 outline-none text-gray-500 py-1"
-                    >
-                        <option value="">Default</option>
-                        <option value="">Capitalized</option>
-                        <option value="">lowercase</option>
-                        <option value="">UPPERCASE</option>
-                    </select>
-                </div>
-
-                <div className="flex justify-between gap-4">
-                    <label htmlFor="" className="text-gray-500">
-                        Style
-                    </label>
-                    <select
-                        name=""
-                        id=""
-                        className="rounded-md px-2 outline-none text-gray-500 py-1"
-                    >
-                        <option value="">Normal</option>
-                        <option value="">Italic</option>
-                        <option value="">Oblique</option>
-                    </select>
-                </div>
-
-                <div className="flex justify-between gap-4">
-                    <label htmlFor="" className="text-gray-500">
-                        Decoration
-                    </label>
-                    <select
-                        name=""
-                        id=""
-                        className="rounded-md px-2 outline-none text-gray-500 py-1"
-                    >
-                        <option value="">Default</option>
-                        <option value="">Overline</option>
-                        <option value="">line-through</option>
-                        <option value="">Underline</option>
-                        <option value="">underline overline</option>
-                    </select>
-                </div>
-
-                {/* with slider */}
-                <div className="flex flex-col">
-                    <label className="text-gray-500">Line-Height</label>
-                    <div className="flex items-center gap-2 ">
-                        <div className=" w-10/12">
-                            <input
-                                className="w-full"
-                                type="range"
-                                name=""
-                                id=""
-                            />
-                        </div>
-                        <div className="flex flex-col w-2/12">
-                            <select
-                                name=""
-                                id=""
-                                className="bg-transparent w-11"
-                            >
-                                <option value="px">px</option>
-                                <option value="rem">rem</option>
-                            </select>
-                            <input
-                                type="number"
-                                name=""
-                                id=""
-                                className="w-9 h-9 rounded-md"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                {/* with slider */}
-                <div className="flex flex-col">
-                    <label className="text-gray-500">Letter Spaceing</label>
-                    <div className="flex items-center gap-2 ">
-                        <div className=" w-10/12">
-                            <input
-                                className="w-full"
-                                type="range"
-                                name=""
-                                id=""
-                            />
-                        </div>
-                        <div className="flex flex-col w-2/12">
-                            <select
-                                name=""
-                                id=""
-                                className="bg-transparent w-11"
-                            >
-                                <option value="px">px</option>
-                                <option value="rem">rem</option>
-                            </select>
-                            <input
-                                type="number"
-                                name=""
-                                id=""
-                                className="w-9 h-9 rounded-md"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                {/* with slider */}
-                <div className="flex flex-col">
-                    <label className="text-gray-500">Word Spacing</label>
-                    <div className="flex items-center gap-2 ">
-                        <div className=" w-10/12">
-                            <input
-                                className="w-full"
-                                type="range"
-                                name=""
-                                id=""
-                            />
-                        </div>
-                        <div className="flex flex-col w-2/12">
-                            <select
-                                name=""
-                                id=""
-                                className="bg-transparent w-11"
-                            >
-                                <option value="px">px</option>
-                                <option value="rem">rem</option>
-                            </select>
-                            <input
-                                type="number"
-                                name=""
-                                id=""
-                                className="w-9 h-9 rounded-md"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <div>
+                <h2
+                    id="heading-h2"
+                    onClick={(e) =>
+                        handleClick(e, getProperties(typography, 'heading-h2'))
+                    }
+                    style={getProperties(typography, 'heading-h2')}
+                    className="hover:border hover:cursor-pointer"
+                >
+                    {' '}
+                    h2 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                </h2>
+                <h6
+                    id="heading-h6"
+                    // onClick={handleClick}
+                    onClick={(e) =>
+                        handleClick(e, getProperties(typography, 'heading-h6'))
+                    }
+                    style={getProperties(typography, 'heading-h6')}
+                    className="hover:border hover:cursor-pointer"
+                >
+                    {' '}
+                    h1 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                </h6>
+                <span
+                    id="span-1"
+                    // onClick={handleClick}
+                    onClick={(e) =>
+                        handleClick(e, getProperties(typography, 'span-1'))
+                    }
+                    style={getProperties(typography, 'span-1')}
+                    className="hover:border hover:cursor-pointer"
+                >
+                    {' '}
+                    span Lorem, ipsum dolor sit amet consectetur adipisicing
+                    elit.
+                </span>
+                <p
+                    id="p-1"
+                    // onClick={handleClick}
+                    onClick={(e) =>
+                        handleClick(e, getProperties(typography, 'p-1'))
+                    }
+                    style={getProperties(typography, 'p-1')}
+                    className="hover:border hover:cursor-pointer"
+                >
+                    p Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                </p>
+            </div>
         </div>
     );
 };

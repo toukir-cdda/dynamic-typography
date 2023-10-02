@@ -15,146 +15,225 @@ const initialState = {
         wordSpacing: '',
     },
 
-    componentData: [],
-    selectedTag: {},
-    tagStyles: {
-        fontSize: '',
-        fontWeight: '',
-    },
+    typography: [
+        // {
+        //     elementId: '',
+        //     properties: {
+        //         fontFamily: '',
+        //         fontSize: '',
+        //         fontWeight: '',
+        //         textTransform: '',
+        //         fontStyle: '',
+        //         textDecoration: '',
+        //         lineHeight: '',
+        //         letterSpacing: '',
+        //         wordSpacing: '',
+        //     },
+        // },
+    ],
+
+    selectedEleId: '',
+};
+
+const updatePropertis = (state, updatedKey, updatedValue) => {
+    return state.typography.map((element) => {
+        if (element.elementId === state.selectedEleId) {
+            return {
+                ...element,
+                properties: {
+                    ...element.properties,
+                    [updatedKey]: updatedValue,
+                },
+            };
+        }
+        return element;
+    });
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'SET_COMPONENT_DATA':
-            const data = action.payload;
-            const modifiedData = [];
-            //Helper function to recursively find children for a given parentId
-            const findChildren = (parentId) => {
-                const children = [];
-                for (const item of data) {
-                    if (item.parentId === parentId) {
-                        const childItem = {
-                            ...item,
-                            children: findChildren(item.id),
-                        };
-                        children.push(childItem);
-                    }
-                }
-                return children.length > 0 ? children : null;
-            };
-
-            for (const item of data) {
-                if (!item.parentId) {
-                    const newItem = {
-                        ...item,
-                        children: findChildren(item.id),
-                    };
-                    modifiedData.push(newItem);
-                }
-            }
-
+        case 'SET_FONT_FAMILY':
+            const updatedFontFamily = action.payload;
             return {
                 ...state,
-                componentData: modifiedData,
-            };
-
-        case 'SELECTED_CHILD_TAG':
-            return {
-                ...state,
-                selectedTag: action.payload,
-            };
-
-        case 'SET_TAG':
-            const updatedTag = action.payload;
-            const selectedTag = { ...state.selectedTag };
-
-            const updatedComponentData = state.componentData.map((parent) => {
-                const updatedChildren = parent.children.map((child) => {
-                    if (child.id === selectedTag.id) {
-                        return {
-                            ...child,
-                            tag: updatedTag,
-                        };
-                    }
-                    return child;
-                });
-                return {
-                    ...parent,
-                    children: updatedChildren,
-                };
-            });
-
-            return {
-                ...state,
-                componentData: updatedComponentData,
-                tagStyles: {
-                    ...state.tagStyles,
-                    tag: action.payload,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    fontFamily: updatedFontFamily,
                 },
+                typography: updatePropertis(
+                    state,
+                    'fontFamily',
+                    updatedFontFamily
+                ),
             };
 
         case 'SET_FONT_SIZE':
             const updatedFontSize = action.payload;
-            const selectedTagFZ = { ...state.selectedTag };
 
-            const updatedComponent = state.componentData.map((parent) => {
-                const updatedChildren = parent.children.map((child) => {
-                    if (child.id === selectedTagFZ.id) {
-                        return {
-                            ...child,
-                            styles: {
-                                ...child.styles,
-                                fontSize: updatedFontSize,
-                            },
-                        };
-                    }
-                    return child;
-                });
-                return {
-                    ...parent,
-                    children: updatedChildren,
-                };
-            });
+            // const updatedPropertis = state.typography.map((element) => {
+            //     if (element.elementId === state.selectedEleId) {
+            //         return {
+            //             ...element,
+            //             properties: {
+            //                 ...element.properties,
+            //                 fontSize: updatedFontSize,
+            //             },
+            //         };
+            //     }
+            //     return element;
+            // });
 
             return {
                 ...state,
-                componentData: updatedComponent,
-                tagStyles: {
-                    ...state.tagStyles,
-                    fontSize: action.payload,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    fontSize: updatedFontSize,
                 },
+                typography: updatePropertis(state, 'fontSize', updatedFontSize),
             };
 
         case 'SET_FONT_WEIGTH':
             const updatedFontWeigth = action.payload;
-            const selectedTagFw = { ...state.selectedTag };
-
-            const updatedComponentFw = state.componentData.map((parent) => {
-                const updatedChildren = parent.children.map((child) => {
-                    if (child.id === selectedTagFw.id) {
-                        return {
-                            ...child,
-                            styles: {
-                                ...child.styles,
-                                fontWeight: Number(updatedFontWeigth),
-                            },
-                        };
-                    }
-                    return child;
-                });
-                return {
-                    ...parent,
-                    children: updatedChildren,
-                };
-            });
-
             return {
                 ...state,
-                componentData: updatedComponentFw,
-                tagStyles: {
-                    ...state.tagStyles,
-                    fontWeight: action.payload,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    fontWeight: updatedFontWeigth,
                 },
+                typography: updatePropertis(
+                    state,
+                    'fontWeight',
+                    updatedFontWeigth
+                ),
+            };
+
+        case 'SET_TEXT_TRANSFROM':
+            const updatedTextTransform = action.payload;
+            return {
+                ...state,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    textTransform: updatedTextTransform,
+                },
+                typography: updatePropertis(
+                    state,
+                    'textTransform',
+                    updatedTextTransform
+                ),
+            };
+
+        case 'SET_FONT_STYLE':
+            const updatedFontStyle = action.payload;
+            return {
+                ...state,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    fontStyle: updatedFontStyle,
+                },
+                typography: updatePropertis(
+                    state,
+                    'fontStyle',
+                    updatedFontStyle
+                ),
+            };
+
+        case 'SET_TEXT_DECORATION':
+            const updatedTextDecoration = action.payload;
+            return {
+                ...state,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    textDecoration: updatedTextDecoration,
+                },
+                typography: updatePropertis(
+                    state,
+                    'textDecoration',
+                    updatedTextDecoration
+                ),
+            };
+
+        case 'SET_LINE_HEIGHT':
+            const updatedLineHeight = action.payload;
+            return {
+                ...state,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    lineHeight: updatedLineHeight,
+                },
+                typography: updatePropertis(
+                    state,
+                    'lineHeight',
+                    updatedLineHeight
+                ),
+            };
+
+        case 'SET_LETTER_SPACING':
+            const updatedLetterSpacing = action.payload;
+            return {
+                ...state,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    letterSpacing: updatedLetterSpacing,
+                },
+                typography: updatePropertis(
+                    state,
+                    'letterSpacing',
+                    updatedLetterSpacing
+                ),
+            };
+
+        case 'SET_WORD_SPACING':
+            const updatedWordSpaching = action.payload;
+            return {
+                ...state,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    wordSpacing: updatedWordSpaching,
+                },
+                typography: updatePropertis(
+                    state,
+                    'wordSpacing',
+                    updatedWordSpaching
+                ),
+            };
+
+        case 'SET_ELEMENT_PROPERTIES':
+            const { elementId, properties } = action.payload;
+            //checking elementId is available or not
+            const existingElementIndex = state.typography.findIndex(
+                (item) => item.elementId === elementId
+            );
+            if (existingElementIndex !== -1) {
+                //available
+                const updatedElement = [...state.typography];
+                // const elemt = typography.find(
+                //     (el) => el.elementId === elementId
+                // );
+                updatedElement[existingElementIndex].properties = properties;
+                // updatedElement[existingElementIndex].properties =
+                //     elemt.properties;
+
+                return {
+                    ...state,
+                    typography: updatedElement,
+                };
+            } else {
+                //not available
+                return {
+                    ...state,
+                    typography: [
+                        ...state.typography,
+                        { elementId, properties },
+                    ],
+                    selectedEleId: elementId,
+                };
+            }
+
+        case 'SELECT_ELEMENT':
+            const eleId = action.payload;
+            return {
+                ...state,
+                selectedEleId: eleId,
             };
 
         default:

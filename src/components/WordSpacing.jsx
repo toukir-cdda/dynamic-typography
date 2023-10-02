@@ -2,8 +2,9 @@
 import { TyphographyDrawerContext } from '@/context/typographyDrawer.context';
 import { useContext, useEffect, useState } from 'react';
 
-const FontSize = () => {
+const WordSpacing = () => {
     const { state, dispatch } = useContext(TyphographyDrawerContext);
+
     function splitValueAndUnit(input) {
         // Regular expression to match digits and units
         const regex = /^(\d*)?([a-zA-Z]+)$/;
@@ -21,25 +22,24 @@ const FontSize = () => {
         return { digit, unit };
     }
     const [unit, setUnit] = useState('px');
-    const [fontSize, setFontSize] = useState('12px');
+    const [wordSpacing, setWordSpacing] = useState('12px');
 
     const handleChange = (e) => {
-        setFontSize(
+        setWordSpacing(
             unit === 'px' ? `${e.target.value}px` : `${e.target.value}rem`
         );
     };
-    const { digit } = splitValueAndUnit(fontSize);
+    const { digit } = splitValueAndUnit(wordSpacing);
 
     useEffect(() => {
         dispatch({
-            type: 'SET_FONT_SIZE',
-            payload: fontSize,
+            type: 'SET_WORD_SPACING',
+            payload: wordSpacing,
         });
-    }, [fontSize]);
-
+    }, [wordSpacing, unit]);
     return (
         <div className="flex flex-col">
-            <label className="text-gray-500">Font Size</label>
+            <label className="text-gray-500">Word Spacing</label>
             <div className="flex items-center gap-2  ">
                 <div className="w-10/12">
                     <input
@@ -60,7 +60,7 @@ const FontSize = () => {
                     <input
                         type="number"
                         value={digit}
-                        // value={fontSize}
+                        // value={wordSpacing}
                         onChange={handleChange}
                         className="w-9 h-9 rounded-md"
                     />
@@ -70,4 +70,4 @@ const FontSize = () => {
     );
 };
 
-export default FontSize;
+export default WordSpacing;
