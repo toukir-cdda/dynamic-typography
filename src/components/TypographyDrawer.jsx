@@ -50,11 +50,9 @@ const TypographyDrawer = () => {
         }
     };
 
-    console.log(state);
-
     return (
-        <div className="flex justify-center items-center gap-4">
-            <div className="bg-gray-200 rounded-md p-3 ">
+        <div className="grid  ">
+            <div className="bg-gray-200 rounded-md p-3 w-[375px] ">
                 <h3 className="font-semibold py-2">Typography</h3>
                 <form className="flex flex-col gap-2">
                     <FontFamily />
@@ -66,11 +64,11 @@ const TypographyDrawer = () => {
                     <LineHeight />
                     <LetterSpacing />
                     <WordSpacing />
-                    {/* <TextColor /> */}
+                    <TextColor />
                 </form>
             </div>
 
-            <div>
+            <div className="grid-cols-3">
                 <h2
                     id="heading-h2"
                     onClick={(e) =>

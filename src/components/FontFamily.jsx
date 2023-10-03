@@ -13,12 +13,14 @@ const FontFamily = () => {
     ];
 
     const [fontFamily, setFontFamily] = useState('"Roboto", sans-serif');
+
     useEffect(() => {
         dispatch({
             type: 'SET_FONT_FAMILY',
             payload: fontFamily,
         });
     }, [fontFamily]);
+
     return (
         <div className="flex justify-between gap-4">
             <label htmlFor="" className="text-gray-500">

@@ -13,6 +13,7 @@ const initialState = {
         lineHeight: '',
         letterSpacing: '',
         wordSpacing: '',
+        color: '',
     },
 
     typography: [
@@ -195,6 +196,17 @@ const reducer = (state = initialState, action) => {
                     'wordSpacing',
                     updatedWordSpaching
                 ),
+            };
+
+        case 'SET_TEXT_COLOR':
+            const updatedTextColor = action.payload;
+            return {
+                ...state,
+                typographyProperties: {
+                    ...state.typographyProperties,
+                    color: updatedTextColor,
+                },
+                typography: updatePropertis(state, 'color', updatedTextColor),
             };
 
         case 'SET_ELEMENT_PROPERTIES':
