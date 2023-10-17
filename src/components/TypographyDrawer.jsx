@@ -49,6 +49,7 @@ const TypographyDrawer = () => {
             return elemt?.properties;
         }
     };
+    console.log(typographyProperties);
 
     return (
         <div className="grid  ">
